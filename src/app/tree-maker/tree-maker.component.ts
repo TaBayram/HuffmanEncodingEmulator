@@ -33,6 +33,9 @@ export class TreeMakerComponent implements OnInit {
 
   ngOnInit(): void {
     this.pageType = PageType.Huffman;
+
+    this.inputForHuffman = "asfasghsfasdvzxczx";
+    this.onSubmit();
   }
 
   generate(): void {
@@ -58,7 +61,7 @@ export class TreeMakerComponent implements OnInit {
           sketch.createCanvas(window.innerWidth, 1600);
         };
         sketch.draw = () => {
-          sketch.background(100);
+          sketch.background(250);
           for (const node of this.nodes) {
             node.draw(sketch);
           }
@@ -91,10 +94,10 @@ export class TreeMakerComponent implements OnInit {
     const childNodes = topNode.createChildren(true, 0);
     pNodes.push(...childNodes.nodes);
 
-    const anglePerDepth = -20;
-    const distancePerDepth = -childNodes.depth*10;
-    const distance = 60 + childNodes.depth *30;
-    const angle = 30 + childNodes.depth * 10;
+    const anglePerDepth = -10;
+    const distancePerDepth = -childNodes.depth*15;
+    const distance = 90 + childNodes.depth * 60;
+    const angle = 40 + childNodes.depth * 5;
     
 
     topNode.calculatePosition({ x: this.canvas.width / 2, y: 50 }, distance, angle, anglePerDepth, distancePerDepth);
