@@ -1,5 +1,5 @@
 import DICTIONARY from '../constant/asciitobin';
-import { Bincode } from './binarycode';
+import { Bincode } from './bincode';
 import { Gain } from './gain';
 import { TreeNode } from './treenode';
 

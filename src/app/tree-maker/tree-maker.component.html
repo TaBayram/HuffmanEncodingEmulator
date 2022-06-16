@@ -9,12 +9,7 @@
       <p class="fs-1">Huffman Generator</p>
       <div class="row">
         <div class="col">
-<<<<<<< HEAD
           <p class="fs-5">Enter text below to create a Huffman Tree. The following characters will be used to create the tree: letters, numbers, space, full stop, comma, single quote. All other characters are ignored.</p>
-=======
-          <p class="fs-5">Enter text below to create a Huffman Tree. The following characters will be used to create the
-            tree: letters, numbers, full stop, comma, single quote. All other characters are ignored.</p>
->>>>>>> c217b2f843e6060b46542a7620f9aa0a302ad2f2
           <div class="form-group">
             <textarea class="form-control" id="inputText" rows="5" placeholder="Enter some text to create Huffman tree"
               [(ngModel)]="inputForHuffman"></textarea>
@@ -28,7 +23,7 @@
         <hr>
         <li class="list-group">
           <div class="list-group-item" style="cursor: pointer" *ngFor="let row of rows; let i = index">
-            {{row.name}} ({{row.probability}})
+            {{row.name}} ({{row.code.original}})  ({{row.code.coded}})  ({{row.code.gainPercent*100}}%)
           </div>
         </li>
       </div>

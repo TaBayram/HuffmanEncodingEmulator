@@ -3,10 +3,10 @@ import * as p5 from "p5";
 import { Color, Vector } from "./other";
 
 export class P5Node {
-    public position: Vector;
+    public position: Vector = { x: 0, y: 0 };
     public leftNode: P5Node;
     public rightNode: P5Node;
-    lines: { text: string, textOffset: number, vector: Vector }[];
+    lines: { text: string, textOffset: number, vector: Vector }[] = [];
     constructor(public node: TreeNode, public size: number, public color: Color) { }
     draw(p5: p5) {
         for (const line of this.lines) {
@@ -23,20 +23,21 @@ export class P5Node {
     /**
      * Changes position of its child nodes
      */
-    calculatePosition(startPosition: Vector, distance: number, angle: number) {
-        this.lines = [];
+    calculatePosition(startPosition: Vector, distance: number, angle: number, anglePerDepth: number, distancePerDepth: number, depth: number = 0) {
         this.position.x = startPosition.x;
         this.position.y = startPosition.y;
 
         this.leftNode?.calculatePosition(
-            this.polarProjection(distance, 90 + angle),
+            this.polarProjection(Math.max(distance + distancePerDepth * depth, this.size + 10), Math.max(90 + angle + anglePerDepth * depth, 60)),
             distance,
-            angle
+            angle,
+            anglePerDepth, distancePerDepth, depth + 1
         );
         this.rightNode?.calculatePosition(
-            this.polarProjection(distance, 90 - angle),
+            this.polarProjection(Math.max(distance + distancePerDepth * depth, this.size + 10), Math.min(90 - angle - anglePerDepth * depth, 120)),
             distance,
-            angle
+            angle,
+            anglePerDepth, distancePerDepth, depth + 1
         );
 
         if (this.leftNode) {
@@ -47,20 +48,36 @@ export class P5Node {
         }
     }
 
-    createChildren(isRecursive:boolean,depth:number):P5Node[]{
-        if(this.node.LeftNode){
-            this.leftNode = new P5Node(this.node.LeftNode,this.size,this.color);
+    createChildren(isRecursive: boolean, depth: number): { nodes: P5Node[], depth: number } {
+        if (this.node.LeftNode) {
+            this.leftNode = new P5Node(this.node.LeftNode, this.size, this.color);
         }
-        if(this.node.RightNode){
-            this.rightNode = new P5Node(this.node.RightNode,this.size,this.color);
+        if (this.node.RightNode) {
+            this.rightNode = new P5Node(this.node.RightNode, this.size, this.color);
         }
-        const children:P5Node[] = [];
-        if(isRecursive){
-            children.push(...this.leftNode.createChildren(isRecursive,depth+1));
-            children.push(...this.rightNode.createChildren(isRecursive,depth+1));
+        const children: P5Node[] = [];
+        let maxDepth = depth;
+        if (isRecursive) {
+
+            if (this.leftNode) {
+                children.push(this.leftNode);
+                const data = this.leftNode.createChildren(isRecursive, depth + 1);
+                children.push(...data.nodes);
+                if (maxDepth < data.depth) {
+                    maxDepth = data.depth;
+                }
+            }
+            if (this.rightNode) {
+                children.push(this.rightNode);
+                const data = this.rightNode.createChildren(isRecursive, depth + 1)
+                children.push(...data.nodes);
+                if (maxDepth < data.depth) {
+                    maxDepth = data.depth;
+                }
+            }
         }
 
-        return children;
+        return { nodes: children, depth: maxDepth };
     }
 
     polarProjection(distance: number, angle: number): Vector {

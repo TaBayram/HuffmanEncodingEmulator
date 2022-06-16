@@ -1,7 +1,7 @@
-import { Bincode } from './binarycode';
+import { Bincode } from './bincode';
 
 export class Gain {
-  constructor(private codes: Map<string, Bincode>) {}
+  constructor(public codes: Map<string, Bincode>) {}
 
   public get gainPercent(): number {
     let averageGain = 0;
