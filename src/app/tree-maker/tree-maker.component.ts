@@ -13,11 +13,23 @@ export class TreeMakerComponent implements OnInit {
   private canvas: p5;
   private nodes: p5Node[] = [];
 
-  inputText: string;
+  ePageType = PageType;
+  pageType: PageType;
+  inputForHuffman: string;
+  inputForRunLength: string;
+
+  goToRunLengthPage() {
+    this.pageType = PageType.RunLength;
+  }
+  goToHuffmanPage() {
+    this.pageType = PageType.Huffman;
+  }
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.pageType = PageType.Huffman;
+  }
 
   generate(): void {
     // random chars
@@ -70,4 +82,9 @@ export class TreeMakerComponent implements OnInit {
 
     node.calculatePosition({ x: window.innerWidth / 2, y: 50 }, 100, 30);
   }
+}
+
+export enum PageType {
+  RunLength,
+  Huffman,
 }
