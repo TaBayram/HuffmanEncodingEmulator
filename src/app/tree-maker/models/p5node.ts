@@ -20,8 +20,6 @@ export class P5Node {
         p5.textAlign('center', 'center');
         p5.text(this.node.name, this.position.x, this.position.y);
     }
-
-
     /**
      * Changes position of its child nodes
      */
@@ -31,12 +29,12 @@ export class P5Node {
         this.position.y = startPosition.y;
 
         this.leftNode?.calculatePosition(
-            this.PolarProjection(distance, 90 + angle),
+            this.polarProjection(distance, 90 + angle),
             distance,
             angle
         );
         this.rightNode?.calculatePosition(
-            this.PolarProjection(distance, 90 - angle),
+            this.polarProjection(distance, 90 - angle),
             distance,
             angle
         );
@@ -49,7 +47,23 @@ export class P5Node {
         }
     }
 
-    PolarProjection(distance: number, angle: number): Vector {
+    createChildren(isRecursive:boolean,depth:number):P5Node[]{
+        if(this.node.LeftNode){
+            this.leftNode = new P5Node(this.node.LeftNode,this.size,this.color);
+        }
+        if(this.node.RightNode){
+            this.rightNode = new P5Node(this.node.RightNode,this.size,this.color);
+        }
+        const children:P5Node[] = [];
+        if(isRecursive){
+            children.push(...this.leftNode.createChildren(isRecursive,depth+1));
+            children.push(...this.rightNode.createChildren(isRecursive,depth+1));
+        }
+
+        return children;
+    }
+
+    polarProjection(distance: number, angle: number): Vector {
         let newVector: Vector = { x: 0, y: 0 };
         newVector.x = this.position.x + distance * Math.cos(angle * (Math.PI / 180));
         newVector.y = this.position.y + distance * Math.sin(angle * (Math.PI / 180));

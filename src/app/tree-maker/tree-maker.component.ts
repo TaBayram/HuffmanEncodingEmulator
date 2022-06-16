@@ -26,7 +26,7 @@ export class TreeMakerComponent implements OnInit {
     this.pageType = PageType.Huffman;
   }
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     this.pageType = PageType.Huffman;
@@ -44,41 +44,32 @@ export class TreeMakerComponent implements OnInit {
   }
 
   onSubmit() {
-    const that = this;
     const sketch = (sketch: p5) => {
       sketch.preload = () => {
-        // preload code
       };
       sketch.setup = () => {
         sketch.createCanvas(window.innerWidth, 400);
       };
-
       sketch.draw = () => {
         for (const node of this.nodes) {
           node.draw(sketch);
         }
       };
     };
-
     this.canvas = new p5(sketch);
 
-    let node1 = new TreeNode('a', 0.25);
-    let node2 = new TreeNode('b', 0.25);
-    node1.LeftNode = node2;
-    let node3 = new TreeNode('c', 0.25);
-    node1.RightNode = node3;
-
-    let node = new P5Node(node1, 25, { r: 255, g: 200, b: 100, a: 255 });
-    let node0 = new P5Node(node2, 25, { r: 255, g: 200, b: 100, a: 255 }); node.leftNode = node0;
-    let node01 = new P5Node(node3, 25, { r: 255, g: 200, b: 100, a: 255 }); node.rightNode = node01;
-
-    this.nodes.push(node, node0, node01);
-
-    node.calculatePosition({ x: 100, y: 50 }, 45, 30);
   }
 
   public createTree(nodes: TreeNode[]) {
-    const p5Node = new P5Node(nodes[0],25,{ r: 255, g: 200, b: 100, a: 255 });
+    this.nodes = [];
+    const size = 40;
+    const color: Color = { r: 200, g: 0, b: 200, a: 255 };
+    const pNodes: P5Node[] = [];
+    const topNode = new P5Node(nodes[0], size, color);
+    pNodes.push(topNode);
+    pNodes.push(...topNode.createChildren(true,0));
+
+    this.nodes.push(...pNodes);
   }
 }
 
