@@ -1,13 +1,33 @@
 <div class="container p-5">
   <div class="col">
-    <p class="fs-1">Huffman Generator</p>
     <div class="row">
-      <div class="col">
-        <p class="fs-5">Enter text below to create a Huffman Tree. The following characters will be used to create the tree: letters, numbers, full stop, comma, single quote. All other characters are ignored.</p>
-        <div class="form-group">
-          <textarea class="form-control" id="inputText" rows="5" placeholder="Enter some text to create Huffman tree" [(ngModel)]="inputText"></textarea>
+      <button class="btnCustom mx-3" (click)="goToHuffmanPage()">Huffman</button>
+      <button class="btnCustom" (click)="goToRunLengthPage()">Run-Length</button>
+    </div>
+
+    <div class="col" *ngIf="pageType == ePageType.Huffman">
+      <p class="fs-1">Huffman Generator</p>
+      <div class="row">
+        <div class="col">
+          <p class="fs-5">Enter text below to create a Huffman Tree. The following characters will be used to create the tree: letters, numbers, full stop, comma, single quote. All other characters are ignored.</p>
+          <div class="form-group">
+            <textarea class="form-control" id="inputText" rows="5" placeholder="Enter some text to create Huffman tree" [(ngModel)]="inputForHuffman"></textarea>
+          </div>
+          <button class="btnCustom mt-3" (click)="onSubmit()">Generate Tree</button>
         </div>
-        <button class="btnCustom mt-3" (click)="onSubmit()">Generate Tree</button>
       </div>
-  </div>
+    </div>
+
+    <div class="col" *ngIf="pageType == ePageType.RunLength">
+      <p class="fs-1">Run Length Generator</p>
+      <div class="row">
+        <div class="col">
+          <p class="fs-5">Enter text below to create a Run Length. The following characters will be used to create the tree: letters, numbers, full stop, comma, single quote. All other characters are ignored.</p>
+          <div class="form-group">
+            <textarea class="form-control" id="inputText" rows="5" placeholder="Enter some text to create Run Length" [(ngModel)]="inputForRunLength"></textarea>
+          </div>
+          <button class="btnCustom mt-3" (click)="onSubmit()">Generate</button>
+        </div>
+      </div>
+    </div>
 </div>
