@@ -19,6 +19,8 @@ export class TreeMakerComponent implements OnInit {
   inputForHuffman: string;
   inputForRunLength: string;
 
+  rows:{name:string,probability:string}[] =[{name:"tay",probability:"0.2"},{name:"tay2",probability:"0.2"}];
+
   goToRunLengthPage() {
     this.pageType = PageType.RunLength;
   }
