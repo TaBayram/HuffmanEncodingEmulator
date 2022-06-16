@@ -1,0 +1,15 @@
+.btnCustom{
+  width:150px;
+  height:45px;
+  border-radius:12px;
+  cursor:pointer;
+  border:none;
+  transition:all 0.3s ease;
+  background-color: #4350af;
+  color:#fff;
+}
+
+.btnCustom:hover{
+  background-color: #4350afdf;
+  color:#fff;
+}

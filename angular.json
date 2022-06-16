@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "1302ea86-e247-4ca2-b9ca-7aaf9f0d7a92"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -27,7 +30,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "scripts": []
           },
@@ -97,9 +101,9 @@
               "src/styles.css"
             ],
             "scripts": [
-              "../node_modules/p5/lib/p5.min.js",   
-              "../node_modules/p5/lib/addons/p5.sound.js",   
-              "../node_modules/p5/lib/addons/p5.dom.js" 
+              "../node_modules/p5/lib/p5.min.js",
+              "../node_modules/p5/lib/addons/p5.sound.js",
+              "../node_modules/p5/lib/addons/p5.dom.js"
             ]
           }
         }
