@@ -1,6 +1,9 @@
 import { TreeNode } from "./treenode";
 import * as p5 from "p5";
 
+type Vector = { x: number, y: number };
+type Color = { r: number, g: number, b: number, a: number };
+
 export class p5Node {
     public leftNode: p5Node;
     public rightNode: p5Node;
@@ -45,4 +48,3 @@ export class p5Node {
         return newVector;
     }
 }
-
