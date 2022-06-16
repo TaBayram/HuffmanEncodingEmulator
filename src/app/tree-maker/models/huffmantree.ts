@@ -1,3 +1,6 @@
+import DICTIONARY from '../constant/asciitobin';
+import { BinaryCode } from './binarycode';
+import { CodesAndGain } from './codesandgain';
 import { TreeNode } from './treenode';
 
 export class HuffmanTree {
@@ -22,7 +25,7 @@ export class HuffmanTree {
     }
   }
 
-  public buildTree(): TreeNode {
+  public buildTree() {
     while (!this.isSizeOne()) {
       let left: TreeNode = this.extractMin();
 
@@ -39,7 +42,11 @@ export class HuffmanTree {
       this.insertMinHeap(parent);
     }
 
-    return this.extractMin();
+    return;
+  }
+
+  public getRoot() {
+    return this.heap[0];
   }
 
   public minHeapify(idx: number) {
@@ -97,6 +104,37 @@ export class HuffmanTree {
     return;
   }
 
+  public getGain(): CodesAndGain {
+    let codes = this.getLeafCodes();
+    return new CodesAndGain(codes);
+  }
+
+  private getLeafCodes() {
+    let codes: Map<string, BinaryCode> = new Map<string, BinaryCode>();
+
+    this.traverse(this.heap[0], '', codes);
+
+    return codes;
+  }
+
+  private traverse(
+    node: TreeNode,
+    code: string,
+    codes: Map<string, BinaryCode>
+  ) {
+    if (node.isLeaf) {
+      codes.set(node.name, new BinaryCode(DICTIONARY.get(node.name)!, code));
+    } else {
+      if (node.LeftNode) {
+        this.traverse(node.LeftNode, code + '0', codes);
+      }
+
+      if (node.RightNode) {
+        this.traverse(node.RightNode, code + '1', codes);
+      }
+    }
+  }
+
   private isSizeOne(): boolean {
     return this.size === 1;
   }
@@ -114,9 +152,5 @@ export class HuffmanTree {
     }
 
     return countMap;
-  }
-
-  private isLeaf(node: TreeNode): boolean {
-    return node.RightNode !== undefined && node.LeftNode !== undefined;
   }
 }

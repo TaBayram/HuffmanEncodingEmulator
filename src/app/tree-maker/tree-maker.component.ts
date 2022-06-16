@@ -37,9 +37,11 @@ export class TreeMakerComponent implements OnInit {
 
     let huffmanTree = new HuffmanTree(randomInput);
 
-    console.log(huffmanTree);
+    let tree = huffmanTree.buildTree();
 
-    console.log(huffmanTree.buildTree());
+    let averageGain = huffmanTree.getGain();
+
+    console.log(averageGain);
   }
 
   onSubmit() {
