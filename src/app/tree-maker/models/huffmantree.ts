@@ -1,6 +1,6 @@
 import DICTIONARY from '../constant/asciitobin';
-import { BinaryCode } from './binarycode';
-import { CodesAndGain } from './codesandgain';
+import { Bincode } from './binarycode';
+import { Gain } from './gain';
 import { TreeNode } from './treenode';
 
 export class HuffmanTree {
@@ -104,26 +104,22 @@ export class HuffmanTree {
     return;
   }
 
-  public getGain(): CodesAndGain {
+  public getGain(): Gain {
     let codes = this.getLeafCodes();
-    return new CodesAndGain(codes);
+    return new Gain(codes);
   }
 
   private getLeafCodes() {
-    let codes: Map<string, BinaryCode> = new Map<string, BinaryCode>();
+    let codes: Map<string, Bincode> = new Map<string, Bincode>();
 
     this.traverse(this.heap[0], '', codes);
 
     return codes;
   }
 
-  private traverse(
-    node: TreeNode,
-    code: string,
-    codes: Map<string, BinaryCode>
-  ) {
+  private traverse(node: TreeNode, code: string, codes: Map<string, Bincode>) {
     if (node.isLeaf) {
-      codes.set(node.name, new BinaryCode(DICTIONARY.get(node.name)!, code));
+      codes.set(node.name, new Bincode(DICTIONARY.get(node.name)!, code));
     } else {
       if (node.LeftNode) {
         this.traverse(node.LeftNode, code + '0', codes);

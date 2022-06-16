@@ -1,4 +1,4 @@
-export class BinaryCode {
+export class Bincode {
   constructor(public original: string, public coded: string) {}
 
   public get gainPercent(): number {
