@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import * as p5 from 'p5';
 import { HuffmanTree } from './models/huffmantree';
-import { p5Node } from './models/p5node';
+import { P5Node } from './models/p5node';
 import { TreeNode } from './models/treenode';
+import { Color, Vector } from "./models/other";
 
 @Component({
   selector: 'app-tree-maker',
@@ -11,12 +12,14 @@ import { TreeNode } from './models/treenode';
 })
 export class TreeMakerComponent implements OnInit {
   private canvas: p5;
-  private nodes: p5Node[] = [];
+  private nodes: P5Node[] = [];
 
   ePageType = PageType;
   pageType: PageType;
   inputForHuffman: string;
   inputForRunLength: string;
+
+  rows:{name:string,probability:string}[] =[{name:"tay",probability:"0.2"},{name:"tay2",probability:"0.2"}];
 
   goToRunLengthPage() {
     this.pageType = PageType.RunLength;
@@ -25,7 +28,7 @@ export class TreeMakerComponent implements OnInit {
     this.pageType = PageType.Huffman;
   }
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     this.pageType = PageType.Huffman;
@@ -45,44 +48,32 @@ export class TreeMakerComponent implements OnInit {
   }
 
   onSubmit() {
-    const that = this;
     const sketch = (sketch: p5) => {
       sketch.preload = () => {
-        // preload code
       };
       sketch.setup = () => {
         sketch.createCanvas(window.innerWidth, 400);
       };
-
       sketch.draw = () => {
         for (const node of this.nodes) {
           node.draw(sketch);
         }
       };
     };
-
     this.canvas = new p5(sketch);
 
-    let node1 = new TreeNode('a', 0.25);
-    let node2 = new TreeNode('b', 0.25);
-    node1.LeftNode = node2;
-    let node3 = new TreeNode('c', 0.25);
-    node1.RightNode = node3;
+  }
 
-    let node = new p5Node(node1, 15, 0, 40, { r: 255, g: 200, b: 100, a: 255 });
-    let node0 = new p5Node(node2, 0, 0, 40, { r: 255, g: 200, b: 100, a: 255 });
-    node.leftNode = node0;
-    let node01 = new p5Node(node3, 0, 0, 40, {
-      r: 255,
-      g: 200,
-      b: 100,
-      a: 255,
-    });
-    node.rightNode = node01;
+  public createTree(nodes: TreeNode[]) {
+    this.nodes = [];
+    const size = 40;
+    const color: Color = { r: 200, g: 0, b: 200, a: 255 };
+    const pNodes: P5Node[] = [];
+    const topNode = new P5Node(nodes[0], size, color);
+    pNodes.push(topNode);
+    pNodes.push(...topNode.createChildren(true,0));
 
-    this.nodes.push(node, node0, node01);
-
-    node.calculatePosition({ x: window.innerWidth / 2, y: 50 }, 100, 30);
+    this.nodes.push(...pNodes);
   }
 }
 
