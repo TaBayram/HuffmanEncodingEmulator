@@ -5,6 +5,7 @@ import { P5Node } from './models/p5node';
 import { TreeNode } from './models/treenode';
 import { Color, Vector } from "./models/other";
 import { Bincode } from './models/bincode';
+import { Gain } from './models/gain';
 
 @Component({
   selector: 'app-tree-maker',
@@ -21,6 +22,7 @@ export class TreeMakerComponent implements OnInit {
   inputForRunLength: string;
 
   rows: { name: string, code: Bincode }[] = [];
+  averageGain: {original:number, coded:number, percent:number};
 
   goToRunLengthPage() {
     this.pageType = PageType.RunLength;
@@ -75,6 +77,8 @@ export class TreeMakerComponent implements OnInit {
     averageGain.codes.forEach((code, key) => {
       this.rows.push({ name: key, code: code });
     })
+
+    this.averageGain = {original:averageGain.orijinalSize, coded:averageGain.codedSize, percent: averageGain.gainPercent};
     this.rows.sort((code1, code2) => code1.code.coded.length - code2.code.coded.length);
     const root = huffmanTree.getRoot();
     this.createTree(root);
