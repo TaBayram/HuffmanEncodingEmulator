@@ -16,40 +16,46 @@ export class P5Node {
     constructor(public node: TreeNode, public size: number, public color: Color) { }
 
     draw(p5: p5) {
+        const nameLength = this.node.name.length;
+        const widthBonus = (nameLength != 1) ? nameLength * 5 : 0;
+
         for (const line of this.lines) {
             p5.line(this.position.x, this.position.y, line.vector.x, line.vector.y);
             p5.fill(0);
             p5.text(line.text, (this.position.x + line.vector.x) / 2 + line.textOffset, (this.position.y + line.vector.y) / 2);
         }
+        p5.strokeWeight(2);
         p5.fill(p5.color(this.color.r, this.color.g, this.color.b, this.color.a));
         p5.rectMode("center")
-        p5.rect(this.position.x, this.position.y, this.size, this.size, 10);
+        p5.rect(this.position.x, this.position.y, this.size + widthBonus, this.size, 10);
         p5.fill(0);
         p5.textAlign('center', 'center');
-        p5.text(this.node.name, this.position.x, this.position.y);
+        p5.textWrap(p5.CHAR)
+        p5.textSize(Math.max(20 - nameLength*.5, 8));
+        p5.text(this.node.name, this.position.x, this.position.y, this.size + widthBonus, this.size);
     }
     /**
      * Changes position of its child nodes
      */
-    calculatePosition(startPosition: Vector, distance: number, angle: number, anglePerDepth: number, distancePerDepth: number, depth: number = 0) {
+    calculatePosition(startPosition: Vector, distance: number, angle: number, distancePerDepth: number, anglePerDepth: number, depth: number = 0) {
         this.position.x = startPosition.x;
         this.position.y = startPosition.y;
-        const weirdAdjuster = 0;
+        const weirdAdjuster = 50;
 
         const powDepth = Math.pow(2, depth);
 
         if (this.leftNode) {
             const nDistance = Math.max(distance + distancePerDepth * powDepth, this.size + 30);
-            const nAngle = Math.min(Math.max(90 + angle + anglePerDepth * powDepth - ((this.side == "right") ? weirdAdjuster * depth : 0), 105), 160);
+            const nAngle = Math.min(Math.max(90 + angle + anglePerDepth * powDepth - ((this.side == "right") ? weirdAdjuster * depth : 0), 100), 170);
             const polar = this.polarProjection(nDistance, nAngle);
-            this.leftNode?.calculatePosition(polar, distance, angle, anglePerDepth, distancePerDepth, depth + 1);
+            this.leftNode?.calculatePosition(polar, distance, angle, distancePerDepth, anglePerDepth, depth + 1);
             this.lines.push({ text: "0", textOffset: -10, vector: { x: this.leftNode.position.x, y: this.leftNode.position.y } });
         }
         if (this.rightNode) {
             const nDistance = Math.max(distance + distancePerDepth * powDepth, this.size + 30);
-            const nAngle = Math.max(Math.min(90 - angle - anglePerDepth * powDepth + ((this.side == "left") ? weirdAdjuster * depth : 0), 75), 20);
+            const nAngle = Math.max(Math.min(90 - angle - anglePerDepth * powDepth + ((this.side == "left") ? weirdAdjuster * depth : 0), 80), 10);
             const polar = this.polarProjection(nDistance, nAngle);
-            this.rightNode?.calculatePosition(polar, distance, angle, anglePerDepth, distancePerDepth, depth + 1);
+            this.rightNode?.calculatePosition(polar, distance, angle, distancePerDepth, anglePerDepth, depth + 1);
             this.lines.push({ text: "1", textOffset: 10, vector: { x: this.rightNode.position.x, y: this.rightNode.position.y } });
         }
     }

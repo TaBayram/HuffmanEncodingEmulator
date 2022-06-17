@@ -33,9 +33,6 @@ export class TreeMakerComponent implements OnInit {
 
   ngOnInit(): void {
     this.pageType = PageType.Huffman;
-
-    this.inputForHuffman = "asfasghsfasdvzxczx";
-    this.onSubmit();
   }
 
   generate(): void {
@@ -58,7 +55,7 @@ export class TreeMakerComponent implements OnInit {
         sketch.preload = () => {
         };
         sketch.setup = () => {
-          sketch.createCanvas(window.innerWidth, 1600);
+          sketch.createCanvas(window.innerWidth, 400);
         };
         sketch.draw = () => {
           sketch.background(250);
@@ -75,10 +72,10 @@ export class TreeMakerComponent implements OnInit {
     huffmanTree.buildTree();
     const averageGain = huffmanTree.getGain();
     this.rows = [];
-    averageGain.codes.forEach((code,key) =>{
-      this.rows.push({name:key,code:code});
+    averageGain.codes.forEach((code, key) => {
+      this.rows.push({ name: key, code: code });
     })
-    this.rows.sort((code1,code2 )=> code1.code.coded.length - code2.code.coded.length);
+    this.rows.sort((code1, code2) => code1.code.coded.length - code2.code.coded.length);
     const root = huffmanTree.getRoot();
     this.createTree(root);
 
@@ -87,21 +84,24 @@ export class TreeMakerComponent implements OnInit {
   public createTree(root: TreeNode) {
     this.nodes = [];
     const size = 40;
-    const color: Color = { r: 200, g: 0, b: 200, a: 255 };
+    const color: Color = { r: 240, g: 240, b: 240, a: 255 };
     const pNodes: P5Node[] = [];
     const topNode = new P5Node(root, size, color);
     pNodes.push(topNode);
     const childNodes = topNode.createChildren(true, 0);
     pNodes.push(...childNodes.nodes);
 
+    const powDepth = Math.pow(2, childNodes.depth);
     const anglePerDepth = -10;
-    const distancePerDepth = -childNodes.depth*15;
-    const distance = 90 + childNodes.depth * 60;
-    const angle = 40 + childNodes.depth * 5;
-    
+    const distancePerDepth = -childNodes.depth * 2.5;
+    const distance = 90 + powDepth * 10;
+    const angle = 40 + powDepth * 1;
 
-    topNode.calculatePosition({ x: this.canvas.width / 2, y: 50 }, distance, angle, anglePerDepth, distancePerDepth);
+
+    topNode.calculatePosition({ x: this.canvas.width / 2, y: 50 }, distance, angle, distancePerDepth, anglePerDepth);
     this.nodes.push(...pNodes);
+
+    this.canvas.resizeCanvas(window.innerWidth, (distance + powDepth*10)*2.25, true);
   }
 }
 
