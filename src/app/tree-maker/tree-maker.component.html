@@ -1,9 +1,5 @@
 <div class="container p-5">
   <div class="col">
-    <div class="row">
-      <button class="btnCustom mx-3" (click)="goToHuffmanPage()">Huffman</button>
-      <button class="btnCustom" (click)="goToRunLengthPage()">Run-Length</button>
-    </div>
 
     <div class="col" *ngIf="pageType == ePageType.Huffman">
       <p class="fs-1">Huffman Generator</p>
@@ -17,7 +13,6 @@
           </div>
           <button class="btnCustom mt-3" (click)="onSubmit()">Generate Tree</button>
         </div>
-        <button class="btnCustom mt-3" (click)="generate()">Generate Tree</button>
       </div>
 
       <div class="col-xs-10">
@@ -26,7 +21,7 @@
         Compression: {{averageGain.percent*100}}%
       </div>
 
-      <div class="col-xs-10">
+      <div class="col-xs-10" *ngIf="rows.length > 0">
         <hr>
         <div class="row">
           <div class="col-sm">
